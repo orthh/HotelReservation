@@ -36,8 +36,9 @@ public class ReservationDetails extends BaseEntity{
 	private LocalDate date;
 	
 	@Builder
-	public ReservationDetails(LocalDate date) {
-//		작성ㄷ중
+	public ReservationDetails(Rooms rooms, LocalDate date) {
+		this.rooms = rooms;
+		this.date = date;
 	}
 	
 }

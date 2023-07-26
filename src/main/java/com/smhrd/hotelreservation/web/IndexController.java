@@ -58,6 +58,13 @@ public class IndexController {
 		return "room";
 	}
 	
+	// 예약내역
+	@GetMapping("/reservationList")
+	public String reservationList(Model model) {
+		log.info("예약내역 이동...");
+		return "reservationList";
+	}
+	
 	
 	
 //	

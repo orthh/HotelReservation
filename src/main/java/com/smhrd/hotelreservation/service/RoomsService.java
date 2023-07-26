@@ -36,6 +36,13 @@ public class RoomsService {
 				.roomTypes(roomTypes).build()).getId();
 	}
 	
+	// 특정 객실 정보 보내기
+	@Transactional(readOnly = true)
+	public Rooms findById(Long id) {
+		Rooms rooms = roomsJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+		return rooms;
+	}
+	
 	// 모든 객실 정보 보내기
 	@Transactional(readOnly = true)
 	public List<RoomsResDto> findAllRooms(){
