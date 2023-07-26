@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,9 +20,16 @@ public class RoomTypes extends BaseEntity {
 	@Column(name="roomtype_id")
 	private Long id;
 	
-	private Long roomName;
+	@Column(name="room_name")
+	private String roomName;
 	
 	private Long price;
+	
+	@Builder
+	public RoomTypes(String roomName, Long price) {
+		this.roomName = roomName;
+		this.price = price;
+	}
 	
 	
 }

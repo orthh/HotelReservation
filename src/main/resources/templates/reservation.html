@@ -69,9 +69,7 @@
 
         <label for="room-type">객실 유형</label>
         <select id="room-type" name="room-type" required>
-            <option value="single">싱글룸</option>
-            <option value="double">더블룸</option>
-            <option value="suite">스위트룸</option>
+            <option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomName}"></option>
         </select>
 
         <input type="submit" value="예약하기">
@@ -84,7 +82,7 @@
                 var formData = {
                     checkInDate: $("#check-in-date").val(),
                     checkOutDate: $("#check-out-date").val(),
-                    roomType: $("#room-type").val(),
+                    roomtype_id: $("#room-type").val(),
                 };
 
                 // 데이터를 JSON 형식으로 변환합니다.
@@ -103,6 +101,7 @@
                     },
                     error: function(xhr, status, error) {
                         // 오류 발생 시 처리합니다.
+                        console.log(error);
                         alert("예약 요청을 처리하는 중 오류가 발생했습니다.");
                     }
                 });

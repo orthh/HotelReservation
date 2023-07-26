@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smhrd.hotelreservation.service.ReservationsService;
-
+import com.smhrd.hotelreservation.web.dto.ReservationSaveReqDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +24,14 @@ public class ReservationsController {
 	
 	private final ReservationsService reservationsService;
 	
-	// post등록
+	// post	예약등록
 	@PostMapping("/reservation/add")
-	public Long reservation(@RequestBody JSONObject requestDto) {
+	public Long reservation(@RequestBody ReservationSaveReqDto requestDto) {
+		// @RequestBody로 받으면 Dto타입으로 받을 수 있음.
 		System.out.println(requestDto);
 		log.info("view to controller with reservation");
-		return 200L;
-//		return reservationsService.reservation(requestDto);
+//		return 200L;
+		return reservationsService.reservation(requestDto);
 	}
 	
 
