@@ -42,11 +42,8 @@ public class Reservations extends BaseEntity{
 	public Reservations(Users users, List<ReservationDetails> reservationDetails) {
 		this.users = users;
 		this.reservationDetails = reservationDetails;
-		
-		for (ReservationDetails elem : reservationDetails) {
-			this.calculateTotalPrice(elem.getRooms().getRoomTypes().getPrice());
-		}
-		
+		reservationDetails.forEach(x -> this.calculateTotalPrice(x.getRooms().getRoomTypes().getPrice()));
+
 	}
 	
 	private void calculateTotalPrice(Long price) {
