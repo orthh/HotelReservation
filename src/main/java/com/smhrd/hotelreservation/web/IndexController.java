@@ -66,20 +66,4 @@ public class IndexController {
 	}
 	
 	
-	
-//	
-	// reservationList(예약내역)
-//	@GetMapping("/reservationList")
-//	public String reservationList(Model model) {
-//		log.info("예약 내역 이동...");
-//		model.addAttribute("reservations", reservationsService.findAllReservations());
-//		return "reservationList";
-//	}
-//	
-
-	
-	
-	
-	
-	
 }

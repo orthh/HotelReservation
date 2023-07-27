@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
+
 <head>
-	<title>예약 내역</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>호텔 예약 관리 페이지</title>
 	<style>
 		body {
 			font-family: Arial, sans-serif;
@@ -9,67 +12,97 @@
 		}
 
 		h1 {
-			color: #007BFF;
-		}
-
-		table {
-			border-collapse: collapse;
-			width: 80%;
-			margin: 20px auto;
-		}
-
-		th,
-		td {
-			border: 1px solid #ddd;
-			padding: 8px;
 			text-align: center;
 		}
 
-		th {
-			background-color: #f2f2f2;
+		.reservation-table {
+			width: 100%;
+			border-collapse: collapse;
 		}
 
-		tr:nth-child(even) {
+		.reservation-table th,
+		.reservation-table td {
+			border: 1px solid #ccc;
+			padding: 8px;
+		}
+
+		.reservation-table th {
 			background-color: #f2f2f2;
+			text-align: center;
+		}
+
+		.reservation-table td {
+			text-align: center;
+		}
+
+		.view-details-btn {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			padding: 5px 10px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		.view-details-btn:hover {
+			background-color: #0056b3;
 		}
 	</style>
 </head>
 
 <body>
-	<h1>예약 내역</h1>
+	<h1>호텔 예약 관리 페이지</h1>
 
-	<table>
+	<table class="reservation-table">
 		<thead>
 			<tr>
-				<th>예약 번호</th>
-				<th>이름</th>
+				<th>고객 이름</th>
+				<th>총 가격</th>
 				<th>체크인 날짜</th>
 				<th>체크아웃 날짜</th>
-				<th>객실 번호</th>
-				<th>객실 타입</th>
+				<th>예약 상세 보기</th>
 			</tr>
 		</thead>
 		<tbody>
-			<!-- 예약 내역을 순회하면서 표시 -->
 			<tr>
-				<td>1</td>
 				<td>John Doe</td>
-				<td>2023-07-26</td>
-				<td>2023-07-28</td>
-				<td>101</td>
-				<td>싱글룸</td>
+				<td>$200</td>
+				<td>2023-07-27</td>
+				<td>2023-07-30</td>
+				<td><button class="view-details-btn" data-reservation-id="1">보기</button></td>
 			</tr>
-			<tr>
-				<td>2</td>
-				<td>Jane Smith</td>
-				<td>2023-08-10</td>
-				<td>2023-08-15</td>
-				<td>103</td>
-				<td>더블룸</td>
-			</tr>
-			<!-- 추가적인 예약 내역들 -->
+			<!-- 다른 예약들도 동일한 방식으로 추가 -->
+			<!-- 예약 데이터는 서버에서 동적으로 가져와야 함 -->
 		</tbody>
 	</table>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			// 예약 상세 보기 버튼 클릭 시 이벤트 처리
+			$(".view-details-btn").click(function () {
+				// 예약 아이디 가져오기
+				var reservationId = $(this).data("reservation-id");
+
+				// AJAX 요청 보내기
+				$.ajax({
+					type: "POST", // 혹은 GET, PUT, DELETE 등 원하는 HTTP 메서드 설정
+					url: "/api/reservations/" + reservationId, // 서버 API 엔드포인트 URL
+					dataType: "json", // 받아올 데이터 타입 (JSON 형식으로 받아올 것으로 설정)
+					success: function (data) {
+						// 서버에서 받아온 데이터를 활용하여 리다이렉트 처리 (예제는 /reservation-details 페이지로 리다이렉트)
+						// data에는 서버에서 전달한 JSON 데이터가 들어있습니다.
+						window.location.href = "/reservation-details?id=" + data.reservationId;
+					},
+					error: function (xhr, status, error) {
+						// 에러 처리
+						console.error(error);
+					}
+				});
+			});
+		});
+	</script>
 </body>
 
 </html>

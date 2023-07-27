@@ -3,6 +3,7 @@ package com.smhrd.hotelreservation.service;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -36,14 +37,9 @@ public class ReservationsService {
 	public Long reservation(ReservationSaveReqDto requestDto) {
 		
 		Long code = 200L;
-		
 		// 예약정보 저장
-		this.saveReservation(requestDto);
-		
-		// 결제모듈 (나이스페이먼츠)
-		
-		
-		return code;
+		// 결제모듈 연동(나이스 페이먼츠)
+		return this.saveReservation(requestDto);
 		
 	}
 	
@@ -54,31 +50,32 @@ public class ReservationsService {
 	public Long saveReservation(ReservationSaveReqDto requestDto) {
 		Users users = Users.builder().build();
 		
-		// 빈 객실 찾기
-		
-		List<ReservationDetails> emptyReservationDetails = reservationDetailsJpaRepository
+		// 빈 객실 찾기	
+		List<ReservationDetails> usedReservationDetails = reservationDetailsJpaRepository
 				.findAllByDateBetween(requestDto.getCheckInDate(), requestDto.getCheckOutDate());
 		
 		List<Rooms> allRooms = roomsJpaRepository.findAll();
 		
 		List<Rooms> emptyRooms = allRooms.stream()
-			    .filter(room -> emptyReservationDetails.stream()
+			    .filter(room -> usedReservationDetails.stream()
 			        .noneMatch(elem -> elem.getRooms().getId().equals(room.getId()))
 			    )
 			    .filter(room -> room.getRoomTypes().getId().equals(requestDto.getRoomtype_id()))
 			    .collect(Collectors.toList());
 		
-		System.out.println(emptyRooms.toString());
-		// 
+		// 빈방이 없는경우 -1L반환
+		if(emptyRooms.size() <= 0) return -1L; 
+		// 랜덤한 룸
+		Rooms emtRoom = emptyRooms.get(new Random().nextInt(emptyRooms.size()));
+		List<ReservationDetails> reservationList = new ArrayList<ReservationDetails>();
 		
-		// 일자별로 카운트 계산하기
-		int days = (int) ChronoUnit.DAYS.between(requestDto.getCheckInDate(), requestDto.getCheckOutDate());
-		System.out.println(days);
-
+		// 일자별로 계산
+		int days = (int) ChronoUnit.DAYS.between(requestDto.getCheckInDate(), requestDto.getCheckOutDate()) + 1;
+		for(int i=0; i<days; i++) {
+			reservationList.add(ReservationDetails.builder().rooms(emtRoom).date(requestDto.getCheckInDate().plusDays(i)).build());
+		}
 		
-		
-		
-		return 200L;
+		return reservationsJpaRepository.save(Reservations.builder().users(users).reservationDetails(reservationList).build()).getId();
 	}
 	
 	

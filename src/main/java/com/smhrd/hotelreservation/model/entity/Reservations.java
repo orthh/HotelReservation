@@ -44,7 +44,7 @@ public class Reservations extends BaseEntity{
 		this.reservationDetails = reservationDetails;
 		
 		for (ReservationDetails elem : reservationDetails) {
-//			this.calculateTotalPrice(elem.getPrice());
+			this.calculateTotalPrice(elem.getRooms().getRoomTypes().getPrice());
 		}
 		
 	}
