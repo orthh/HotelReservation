@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -35,7 +35,7 @@
 			text-align: center;
 		}
 
-		.view-details-btn {
+		a {
 			background-color: #007bff;
 			color: #fff;
 			border: none;
@@ -43,9 +43,10 @@
 			border-radius: 5px;
 			cursor: pointer;
 			transition: background-color 0.3s ease;
+			text-decoration: none;
 		}
 
-		.view-details-btn:hover {
+		a {
 			background-color: #0056b3;
 		}
 	</style>
@@ -58,19 +59,20 @@
 		<thead>
 			<tr>
 				<th>고객 이름</th>
-				<th>총 가격</th>
 				<th>체크인 날짜</th>
 				<th>체크아웃 날짜</th>
+				<th>객실 번호</th>
 				<th>예약 상세 보기</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>John Doe</td>
-				<td>$200</td>
-				<td>2023-07-27</td>
-				<td>2023-07-30</td>
-				<td><button class="view-details-btn" data-reservation-id="1">보기</button></td>
+			<tr th:each="reservation : ${reservtionList}">
+				<input type="hidden" name="reservation_id" th:value="${reservation.reservation_id}" />
+				<td th:text="${reservation.username}"></td>
+				<td th:text="${reservation.checkInDate}"></td>
+				<td th:text="${reservation.checkOutDate}"></td>
+				<td th:text="${reservation.roomNumber}"></td>
+				<td><a th:href="@{/reservationList/detail(reservation_id = ${reservation.reservation_id})}">보기</a></td>
 			</tr>
 			<!-- 다른 예약들도 동일한 방식으로 추가 -->
 			<!-- 예약 데이터는 서버에서 동적으로 가져와야 함 -->
@@ -83,17 +85,18 @@
 			// 예약 상세 보기 버튼 클릭 시 이벤트 처리
 			$(".view-details-btn").click(function () {
 				// 예약 아이디 가져오기
-				var reservationId = $(this).data("reservation-id");
-
+				var reservationId = $("input[name='reservation_id']").val();
+				console.log(reservationId);
 				// AJAX 요청 보내기
 				$.ajax({
-					type: "POST", // 혹은 GET, PUT, DELETE 등 원하는 HTTP 메서드 설정
-					url: "/api/reservations/" + reservationId, // 서버 API 엔드포인트 URL
-					dataType: "json", // 받아올 데이터 타입 (JSON 형식으로 받아올 것으로 설정)
+					type: "GET",
+					url: "/reservationList/detail",
+					data: {reservation_id: reservationId}, // 예약 아이디를 URL 파라미터로 보냄
 					success: function (data) {
 						// 서버에서 받아온 데이터를 활용하여 리다이렉트 처리 (예제는 /reservation-details 페이지로 리다이렉트)
 						// data에는 서버에서 전달한 JSON 데이터가 들어있습니다.
-						window.location.href = "/reservation-details?id=" + data.reservationId;
+
+
 					},
 					error: function (xhr, status, error) {
 						// 에러 처리
@@ -102,6 +105,7 @@
 				});
 			});
 		});
+
 	</script>
 </body>
 

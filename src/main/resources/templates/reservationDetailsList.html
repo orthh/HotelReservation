@@ -42,32 +42,27 @@
 		<thead>
 			<tr>
 				<th>예약 번호</th>
+				<th>예약 생성일</th>
 				<th>이름</th>
 				<th>체크인 날짜</th>
 				<th>체크아웃 날짜</th>
 				<th>객실 번호</th>
 				<th>객실 타입</th>
+				<th>총 금액</th>
 			</tr>
 		</thead>
 		<tbody>
-			<!-- 예약 내역을 순회하면서 표시 -->
-			<tr>
-				<td>1</td>
-				<td>John Doe</td>
-				<td>2023-07-26</td>
-				<td>2023-07-28</td>
-				<td>101</td>
-				<td>싱글룸</td>
+
+			<tr th:each="rd : ${reservtionDetail}">
+				<td th:text="${rd.reservation_id}"></td>
+				<td th:text="${rd.CreatedAt}"></td>
+				<td th:text="${rd.username}"></td>
+				<td th:text="${rd.checkInDate}"></td>
+				<td th:text="${rd.checkOutDate}"></td>
+				<td th:text="${rd.roomNumber}"></td>
+				<td th:text="${rd.roomName}"></td>
+				<td th:text="${rd.totalPrice}"></td>
 			</tr>
-			<tr>
-				<td>2</td>
-				<td>Jane Smith</td>
-				<td>2023-08-10</td>
-				<td>2023-08-15</td>
-				<td>103</td>
-				<td>더블룸</td>
-			</tr>
-			<!-- 추가적인 예약 내역들 -->
 		</tbody>
 	</table>
 </body>

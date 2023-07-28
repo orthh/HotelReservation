@@ -6,6 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.smhrd.hotelreservation.service.ReservationsService;
 import com.smhrd.hotelreservation.service.RoomTypesService;
@@ -21,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class IndexController {
 	
 	private final UsersService usersService;
-//	private final ReservationsService reservationsService;
+	private final ReservationsService reservationsService;
 	private final RoomsService roomsService;
 	private final RoomTypesService roomTypesService;
 	
@@ -62,8 +66,16 @@ public class IndexController {
 	@GetMapping("/reservationList")
 	public String reservationList(Model model) {
 		log.info("예약내역 이동...");
+		model.addAttribute("reservtionList", reservationsService.findAll());
 		return "reservationList";
 	}
 	
+	// 예약 상세 내역
+	@GetMapping("/reservationList/detail")
+	public String reservationDetail(Model model, @RequestParam("reservation_id") String reservationId, RedirectAttributes redirectAttributes) {
+		log.info("예약상세 이동...");
+		model.addAttribute("reservtionDetail", reservationsService.findOne(Long.parseLong(reservationId)));
+		return "reservationDetailsList";
+	}
 	
 }
