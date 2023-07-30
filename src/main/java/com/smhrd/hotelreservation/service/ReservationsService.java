@@ -16,6 +16,7 @@ import com.smhrd.hotelreservation.model.entity.Users;
 import com.smhrd.hotelreservation.model.repository.ReservationDetailsJpaRepository;
 import com.smhrd.hotelreservation.model.repository.ReservationsJpaRepository;
 import com.smhrd.hotelreservation.model.repository.RoomsJpaRepository;
+import com.smhrd.hotelreservation.web.dto.ReservationDetailListResDto;
 import com.smhrd.hotelreservation.web.dto.ReservationDetailResDto;
 import com.smhrd.hotelreservation.web.dto.ReservationListResDto;
 import com.smhrd.hotelreservation.web.dto.ReservationSaveReqDto;
@@ -67,6 +68,7 @@ public class ReservationsService {
 		
 		// 빈방이 없는경우 -1L반환
 		if(emptyRooms.size() <= 0) return -1L; 
+		
 		// 랜덤한 룸
 		Rooms emtRoom = emptyRooms.get(new Random().nextInt(emptyRooms.size()));
 		List<ReservationDetails> reservationList = new ArrayList<ReservationDetails>();
@@ -101,11 +103,10 @@ public class ReservationsService {
 	 * method	단일 예약 정보 조회 
 	 */
 	@Transactional
-	public ReservationDetailResDto findOne(Long id) {
-		Users users = Users.builder().build();
-		Reservations r = reservationsJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 예약 정보가 없습니다."));
-		List<ReservationDetails> l = reservationDetailsJpaRepository.findAllByReservationsId(r.getId());
-		return new ReservationDetailResDto(users, r, l);
+	public List<ReservationDetailListResDto> findOne(Long id) {
+		return reservationsJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 예약 정보가 없습니다."))
+				.getReservationDetails().stream().map(ReservationDetailListResDto::new)
+				.collect(Collectors.toList());
 	}
 	
 }

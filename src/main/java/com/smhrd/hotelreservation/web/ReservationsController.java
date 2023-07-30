@@ -25,7 +25,7 @@ public class ReservationsController {
 	private final ReservationsService reservationsService;
 	
 	// post	예약등록
-	@PostMapping("/reservation/add")
+	@PostMapping("/home/reservation/add")
 	public Long reservation(@RequestBody ReservationSaveReqDto requestDto) {
 		// @RequestBody로 받으면 Dto타입으로 받을 수 있음.
 		System.out.println(requestDto);

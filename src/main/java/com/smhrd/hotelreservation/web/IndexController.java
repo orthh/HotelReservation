@@ -23,59 +23,56 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
-	
+
 	private final UsersService usersService;
-	private final ReservationsService reservationsService;
 	private final RoomsService roomsService;
 	private final RoomTypesService roomTypesService;
-	
-	
+	private final ReservationsService reservationsService;
+
 	// 메인페이지
 	@GetMapping("/")
 	public String index(ModelMap model) {
 		usersService.save();
 		return "index";
 	}
-	
-	// reservation(예약하기)
-	@GetMapping("/reservation")
-	public String reservation(Model model) {
-		log.info("예약하기 이동...");
-		model.addAttribute("roomTypes", roomTypesService.findAll());
-		return "reservation";
+
+	// 사용자 페이지
+	@GetMapping("/home")
+	public String home(ModelMap model) {
+		usersService.save();
+		return "home";
 	}
-	
+
+	// 관리자 페이지
+	@GetMapping("/admin")
+	public String admin(ModelMap model) {
+		usersService.save();
+		return "admin";
+	}
+
 	// 객실 타입 관리
-	@GetMapping("/roomtype")
+	@GetMapping("/admin/roomtype")
 	public String roomtype(Model model) {
 		log.info("객실타입관리 이동...");
 		model.addAttribute("roomTypes", roomTypesService.findAll());
 		return "roomtype";
 	}
-	
+
 	// room(객실 관리)
-	@GetMapping("/room")
+	@GetMapping("/admin/room")
 	public String room(Model model) {
 		log.info("객실관리 이동...");
 		model.addAttribute("roomTypes", roomTypesService.findAll());
 		model.addAttribute("rooms", roomsService.findAllRooms());
 		return "room";
 	}
-	
+
 	// 예약내역
-	@GetMapping("/reservationList")
+	@GetMapping("/admin/reservationList")
 	public String reservationList(Model model) {
 		log.info("예약내역 이동...");
 		model.addAttribute("reservtionList", reservationsService.findAll());
 		return "reservationList";
 	}
-	
-	// 예약 상세 내역
-	@GetMapping("/reservationList/detail")
-	public String reservationDetail(Model model, @RequestParam("reservation_id") String reservationId, RedirectAttributes redirectAttributes) {
-		log.info("예약상세 이동...");
-		model.addAttribute("reservtionDetail", reservationsService.findOne(Long.parseLong(reservationId)));
-		return "reservationDetailsList";
-	}
-	
+
 }

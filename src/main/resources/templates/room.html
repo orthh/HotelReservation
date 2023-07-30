@@ -75,7 +75,7 @@
         function addRoom() {
             const formData = new FormData(document.getElementById("addRoomForm"));
 
-            fetch("/room/add", {
+            fetch("/admin/room/add", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

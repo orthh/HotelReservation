@@ -19,7 +19,7 @@ public class RoomsController {
 
 	private final RoomsService roomservice;
 	
-	@PostMapping("/room/add")
+	@PostMapping("/admin/room/add")
 	public Long addRoom(@RequestBody RoomsSaveReqDto requestDto) {
 		log.info("view to controller with addRoom");
 		return roomservice.addRoom(requestDto);

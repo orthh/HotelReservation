@@ -18,7 +18,7 @@ public class RoomTypesController {
 	
 	private final  RoomTypesService roomTypesService;
 
-	@PostMapping("/roomtype/add")
+	@PostMapping("/admin/roomtype/add")
 	public Long addRoomtype(@RequestBody RoomTypesSaveReqDto requestDto) {
 		// @RequestBody로 받으면 Dto타입으로 받을 수 있음.
 		log.info("view to controller with addRoomtype");

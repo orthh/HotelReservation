@@ -22,6 +22,7 @@ public class ReservationListResDto {
 	private Long roomNumber;
 	private Long reservation_id;
 	private LocalDateTime CreatedAt;
+	private Long totalPrice;
 	
 	@Builder
 	public ReservationListResDto(Users user, Reservations reservation, List<ReservationDetails> l) {
@@ -31,6 +32,7 @@ public class ReservationListResDto {
 		this.roomNumber = reservation.getReservationDetails().get(0).getRooms().getRoomNumber();
 		this.reservation_id = reservation.getId();
 		this.CreatedAt = reservation.getCreatedAt();
+		this.totalPrice = reservation.getTotalPrice();
 	}
 
 }
