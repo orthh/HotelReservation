@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<title>호텔 관리</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<style>
 		/* 스타일 시트 코드 */
 		body {
@@ -88,7 +91,7 @@
 			margin-right: 10px;
 		}
 
-		button {
+		.blueButton {
 			background-color: #007BFF;
 			border: none;
 			color: white;
@@ -102,6 +105,19 @@
 			border-radius: 5px;
 		}
 
+		.redButton {
+			background-color: crimson;
+			padding: 3px 6px;
+			border: none;
+			color: white;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+
 		button:hover {
 			background-color: #0056b3;
 		}
@@ -110,23 +126,52 @@
 
 <body>
 	<div id="roomTypeManagement">
- <h1>객실 타입 관리</h1>
+		<h1>객실 타입 관리</h1>
 
-        <a onclick="showAddRoomTypeForm()"><button>새로운 객실 타입 추가</button></a>
+		<a onclick="showAddRoomTypeForm()"><button class="blueButton">새로운 객실 타입 추가</button></a>
 		<table>
 			<thead>
 				<tr>
 					<th>객실 타입</th>
 					<th>가격</th>
+					<th>작업</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="roomType: ${roomTypes}">
-		            <td th:text="${roomType.roomName}"></td>
-		            <td th:text="${roomType.price}"></td>
+					<td th:text="${roomType.roomName}"></td>
+					<td th:text="${roomType.price}"></td>
+					<td>
+						<button class="redButton" th:onclick="updateRoomType([[${roomType.id}]])">수정</button>
+						<button class="redButton" data-toggle="modal" data-target="#myModal">수정모달</button>
+						<button class="redButton" th:onclick="deleteRoomType([[${roomType.id}]])">삭제</button>
+					</td>
 				</tr>
 			</tbody>
 		</table>
+		
+		<!-- 모달 창 -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="myModalLabel">모달 창 제목</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- 모달 내용 -->
+						모달 창 내용
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary">저장</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div id="addRoomTypeForm" style="display: none;">
@@ -141,7 +186,11 @@
 		<input type="number" id="price" name="price" required>
 
 		<button onclick="addRoomType()">추가</button>
-
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<!-- Bootstrap JavaScript -->
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<script>
 			function addRoomType() {
 				const roomType = document.getElementById("roomType").value;
@@ -164,7 +213,7 @@
 						// 서버 응답에 따른 처리 로직
 						// 예를 들어, 성공 시 "추가되었습니다." 메시지를 표시할 수 있음
 						document.getElementById("message").innerText = "추가되었습니다.";
-						location.reload();	
+						location.reload();
 					})
 					.catch(error => {
 						console.error('Error:', error);
@@ -175,7 +224,6 @@
 	</div>
 
 	<script>
-		console.log("${roomTypes}");
 		function showAddRoomTypeForm() {
 			document.getElementById("roomTypeManagement").style.display = "none";
 			document.getElementById("addRoomTypeForm").style.display = "block";
@@ -185,7 +233,49 @@
 			document.getElementById("roomTypeManagement").style.display = "block";
 			document.getElementById("addRoomTypeForm").style.display = "none";
 		}
+		// 룸타입 삭제
+		function deleteRoomType(roomtype_id) {
+			let data = {
+				id: roomtype_id,
+			};
+
+			$.ajax({
+				type: 'DELETE',
+				url: '/admin/roomtypes/remove',
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify(data),
+			}).done((result) => {
+				location.reload();
+			}).fail((error) => {
+				console.log(error);
+			});
+
+		}
+		// 룸타입 수정
+		function updateRoomType(roomtype_id, roomName, price) {
+			let data = {
+				id: roomtype_id,
+				roomName: roomName,
+				price: price
+			};
+
+			$.ajax({
+				type: 'PUT',
+				url: '/admin/roomtypes/update',
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify(data),
+			}).done((result) => {
+				location.reload();
+			}).fail((error) => {
+				console.log(error);
+			});
+
+		}
+
 	</script>
+
 </body>
 
 </html>

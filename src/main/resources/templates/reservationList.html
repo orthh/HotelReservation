@@ -83,7 +83,7 @@
 				<tr th:each="reservation : ${reservtionList}"
 					th:onclick="showReservationDetails([[${reservation.reservation_id}]])">
 					<td th:text="${reservation.reservation_id}"></td>
-					<td th:text="${reservation.createdAt}"></td>
+					<td th:text="${reservation.createdAt}" style="color: blue; cursor: pointer"></td>
 					<td th:text="${reservation.username}"></td>
 					<td th:text="${reservation.totalPrice}"></td>
 					<td><button>취소</button></td>
@@ -169,7 +169,7 @@
 					console.error(error);
 				}
 			});
-			orderDetailsBody.innerHTML = tableBody;
+			
 		}
 
 		function deleteReservationDetail(reservation_detail_id) {
@@ -179,7 +179,7 @@
 
 			$.ajax({
 				type: 'DELETE',
-				url: '/reservationdetails/remove',
+				url: '/admin/reservationdetails/remove',
 				dataType: 'json',
 				contentType: 'application/json; charset=utf-8',
 				data: JSON.stringify(data),

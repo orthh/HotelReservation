@@ -1,100 +1,108 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>객실 관리</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+	<title>객실 관리</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+		}
 
-        h1 {
-            color: #007BFF;
-        }
+		h1 {
+			color: #007BFF;
+		}
 
-        table {
-            border-collapse: collapse;
-            width: 50%;
-            margin: 20px auto;
-        }
+		table {
+			border-collapse: collapse;
+			width: 50%;
+			margin: 20px auto;
+		}
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
+		th,
+		td {
+			border: 1px solid #ddd;
+			padding: 8px;
+			text-align: center;
+		}
 
-        th {
-            background-color: #f2f2f2;
-        }
+		th {
+			background-color: #f2f2f2;
+		}
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-    </style>
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+	</style>
 </head>
+
 <body>
-    <h1>객실 추가</h1>
+	<h1>객실 추가</h1>
 
-    <form id="addRoomForm">
-        <label for="roomNumber">객실 번호:</label>
-        <input type="text" id="roomNumber" name="roomNumber" required>
+	<form id="addRoomForm">
+		<label for="roomNumber">객실 번호:</label>
+		<input type="text" id="roomNumber" name="roomNumber" required>
 
-        <label for="roomType">객실 타입:</label>
-        <select id="roomType" name="roomType" required>
-            <option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomName}"></option>
-        </select>
+		<label for="roomType">객실 타입:</label>
+		<select id="roomType" name="roomType" required>
+			<option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomName}"></option>
+		</select>
 
-        <input type="submit" value="추가">
-    </form>
+		<input type="submit" value="추가">
+	</form>
 	<h1>객실 관리</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>객실 번호</th>
-                <th>객실 타입</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- rooms 배열을 순회하면서 객실 정보를 표시 -->
-            <tr th:each="room : ${rooms}">
-                <td th:text="${room.id}"></td>
-                <td th:text="${room.roomNumber}"></td>
-                <td th:text="${room.roomTypes.roomName}"></td>
-            </tr>
-        </tbody>
-    </table>
-    <script>
-        document.getElementById("addRoomForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            addRoom();
-        });
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>객실 번호</th>
+				<th>객실 타입</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- rooms 배열을 순회하면서 객실 정보를 표시 -->
+			<tr th:each="room : ${rooms}">
+				<td th:text="${room.id}"></td>
+				<td th:text="${room.roomNumber}"></td>
+				<td>
+					<span th:if="${room.roomTypes != null}" th:text="${room.roomTypes.roomName}"></span>
+					<span th:unless="${room.roomTypes != null}">객실타입이 선택되지 않았습니다.</span>
+				</td>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<script>
+		document.getElementById("addRoomForm").addEventListener("submit", function (event) {
+			event.preventDefault();
+			addRoom();
+		});
 
-        function addRoom() {
-            const formData = new FormData(document.getElementById("addRoomForm"));
+		function addRoom() {
+			const formData = new FormData(document.getElementById("addRoomForm"));
 
-            fetch("/admin/room/add", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    roomNumber: formData.get("roomNumber"),
-                    roomType: formData.get("roomType")
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // 서버로부터 응답 받은 데이터를 처리
-                console.log(data);
-                location.reload();
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-        }
-    </script>
+			fetch("/admin/room/add", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					roomNumber: formData.get("roomNumber"),
+					roomType: formData.get("roomType")
+				})
+			})
+				.then(response => response.json())
+				.then(data => {
+					// 서버로부터 응답 받은 데이터를 처리
+					console.log(data);
+					location.reload();
+				})
+				.catch(error => {
+					console.error("Error:", error);
+				});
+		}
+	</script>
 </body>
+
 </html>

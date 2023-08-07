@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class RoomTypesSaveReqDto {
+	private Long id;
 	private String roomName;
 	private Long price;
 	
 	@Builder
-	public RoomTypesSaveReqDto(String roomName, Long price) {
+	public RoomTypesSaveReqDto(Long id,String roomName, Long price) {
+		this.id = id;
 		this.roomName = roomName;
 		this.price = price;
 	}

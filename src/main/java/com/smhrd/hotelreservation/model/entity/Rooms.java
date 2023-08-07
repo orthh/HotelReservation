@@ -15,8 +15,10 @@ import javax.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Rooms extends BaseEntity{
@@ -37,4 +39,5 @@ public class Rooms extends BaseEntity{
 		this.roomNumber = roomNumber;
 		this.roomTypes = roomTypes;
 	}
+
 }

@@ -34,7 +34,15 @@ public class ReservationsController {
 		return reservationsService.reservation(requestDto);
 	}
 	
-
+	// delete 관리자 상세예약 취소
+	@DeleteMapping("/admin/reservationdetails/remove")
+	public Long adminDelete() {
+		
+		
+		
+		return 1L;
+	}
+	
 	
 	
 }
