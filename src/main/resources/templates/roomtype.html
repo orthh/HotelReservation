@@ -5,6 +5,7 @@
 	<title>호텔 관리</title>
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<style>
 		/* 스타일 시트 코드 */
 		body {
@@ -142,14 +143,18 @@
 					<td th:text="${roomType.roomName}"></td>
 					<td th:text="${roomType.price}"></td>
 					<td>
-						<button class="redButton" th:onclick="updateRoomType([[${roomType.id}]])">수정</button>
-						<button class="redButton" data-toggle="modal" data-target="#myModal">수정모달</button>
+
+						<button class="redButton" data-toggle="modal" data-target="#myModal"
+							th:data-room-id="${roomType.id}" th:data-room-name="${roomType.roomName}"
+							th:data-room-price="${roomType.price}" onclick="openModalWithValues(this)">
+							수정
+						</button>
 						<button class="redButton" th:onclick="deleteRoomType([[${roomType.id}]])">삭제</button>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<!-- 모달 창 -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 			aria-hidden="true">
@@ -163,11 +168,20 @@
 					</div>
 					<div class="modal-body">
 						<!-- 모달 내용 -->
-						모달 창 내용
+						<h1>객실 타입 수정</h1>
+
+						<div id="message"></div>
+
+						<input type="hidden" id="roomId">
+						<label for="roomName">객실 타입 이름</label>
+						<input type="text" id="roomType" name="roomName" required>
+
+						<label for="roomPrice">가격</label>
+						<input type="number" id="roomPrice" name="roomPrice" required>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-						<button type="button" class="btn btn-primary">저장</button>
+						<button type="button" class="btn btn-primary" onclick="updateRoomType()">수정</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
 					</div>
 				</div>
 			</div>
@@ -186,44 +200,42 @@
 		<input type="number" id="price" name="price" required>
 
 		<button onclick="addRoomType()">추가</button>
-		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
 		<!-- Bootstrap JavaScript -->
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-		<script>
-			function addRoomType() {
-				const roomType = document.getElementById("roomType").value;
-				const price = document.getElementById("price").value;
-
-				const data = {
-					roomName: roomType,
-					price: price,
-				};
-
-				fetch('/admin/roomtype/add', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify(data)
-				})
-					.then(response => response.json())
-					.then(result => {
-						// 서버 응답에 따른 처리 로직
-						// 예를 들어, 성공 시 "추가되었습니다." 메시지를 표시할 수 있음
-						document.getElementById("message").innerText = "추가되었습니다.";
-						location.reload();
-					})
-					.catch(error => {
-						console.error('Error:', error);
-						// 에러 처리 로직
-					});
-			}
-		</script>
 	</div>
 
 	<script>
+		function addRoomType() {
+			const roomType = document.getElementById("roomType").value;
+			const price = document.getElementById("price").value;
+
+			const data = {
+				roomName: roomType,
+				price: price,
+			};
+
+			fetch('/admin/roomtype/add', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
+				.then(response => response.json())
+				.then(result => {
+					// 서버 응답에 따른 처리 로직
+					// 예를 들어, 성공 시 "추가되었습니다." 메시지를 표시할 수 있음
+					document.getElementById("message").innerText = "추가되었습니다.";
+					location.reload();
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					// 에러 처리 로직
+				});
+		}
 		function showAddRoomTypeForm() {
 			document.getElementById("roomTypeManagement").style.display = "none";
 			document.getElementById("addRoomTypeForm").style.display = "block";
@@ -239,41 +251,67 @@
 				id: roomtype_id,
 			};
 
-			$.ajax({
-				type: 'DELETE',
-				url: '/admin/roomtypes/remove',
-				dataType: 'json',
-				contentType: 'application/json; charset=utf-8',
-				data: JSON.stringify(data),
-			}).done((result) => {
-				location.reload();
-			}).fail((error) => {
-				console.log(error);
-			});
+			fetch('/admin/roomtypes/remove', {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json; charset=utf-8'
+				},
+				body: JSON.stringify(data)
+			})
+				.then(response => response.json())
+				.then(result => {
+					location.reload();
+				})
+				.catch(error => {
+					console.log(error);
+				});
 
 		}
 		// 룸타입 수정
-		function updateRoomType(roomtype_id, roomName, price) {
-			let data = {
-				id: roomtype_id,
+		function updateRoomType() {
+			const roomId = document.getElementById("roomId").value;
+			const roomName = document.getElementById("roomType").value;
+			const roomPrice = document.getElementById("roomPrice").value;
+
+			const data = {
+				id: roomId,
 				roomName: roomName,
-				price: price
+				price: roomPrice
 			};
 
-			$.ajax({
-				type: 'PUT',
-				url: '/admin/roomtypes/update',
-				dataType: 'json',
-				contentType: 'application/json; charset=utf-8',
-				data: JSON.stringify(data),
-			}).done((result) => {
-				location.reload();
-			}).fail((error) => {
-				console.log(error);
-			});
+			fetch('/admin/roomtypes/update', {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
+				.then(response => response.json())
+				.then(result => {
+					location.reload();
+				})
+				.catch(error => {
+					console.log(error);
+				});
 
 		}
 
+		// 모달창 오픈
+		function openModalWithValues(button) {
+			const roomId = button.getAttribute("data-room-id");
+			const roomName = button.getAttribute("data-room-name");
+			const roomPrice = button.getAttribute("data-room-price");
+
+			// 모달 필드에 값 설정
+			document.getElementById("roomId").value = roomId;
+			document.getElementById("roomType").value = roomName;
+			document.getElementById("roomPrice").value = roomPrice;
+
+			// 모달 오픈
+			$('#myModal').modal('show');
+		}
+
+		// 
 	</script>
 
 </body>
