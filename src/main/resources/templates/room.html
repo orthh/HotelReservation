@@ -33,6 +33,44 @@
 		tr:nth-child(even) {
 			background-color: #f2f2f2;
 		}
+
+		.blueButton {
+			background-color: #007BFF;
+			border: none;
+			color: white;
+			padding: 3px 6px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin-bottom: 20px;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+
+		.redButton {
+			background-color: crimson;
+			padding: 3px 6px;
+			border: none;
+			color: white;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		select {
+			padding: 6px;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			font-size: 14px;
+		}
 	</style>
 </head>
 
@@ -48,7 +86,7 @@
 			<option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomName}"></option>
 		</select>
 
-		<input type="submit" value="추가">
+		<input type="submit" value="추가" class="blueButton">
 	</form>
 	<h1>객실 관리</h1>
 
@@ -58,6 +96,7 @@
 				<th>ID</th>
 				<th>객실 번호</th>
 				<th>객실 타입</th>
+				<th>객실 타입 변경</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -69,6 +108,15 @@
 					<span th:if="${room.roomTypes != null}" th:text="${room.roomTypes.roomName}"></span>
 					<span th:unless="${room.roomTypes != null}">객실타입이 선택되지 않았습니다.</span>
 				</td>
+				<td>
+					<form th:id="'updateRoomForm_' + ${room.id}" class="update-room-form">
+						<input type="hidden" name="roomId" th:value="${room.id}">
+						<select name="roomType" required>
+							<option th:each="roomType : ${roomTypes}" th:value="${roomType.id}"
+								th:text="${roomType.roomName}"></option>
+						</select>
+						<button type="submit" class="redButton">변경</button>
+					</form>
 				</td>
 			</tr>
 		</tbody>
@@ -78,7 +126,66 @@
 			event.preventDefault();
 			addRoom();
 		});
+		document.querySelectorAll(".update-room-form").forEach(form => {
+			form.addEventListener("submit", function (event) {
+				event.preventDefault();
+				const formData = new FormData(form);
 
+				const roomId = formData.get("roomId");
+				const roomTypeId = formData.get("roomType");
+
+				updateRoom(roomId, roomTypeId);
+			});
+		});
+
+		function updateRoom(roomId, roomTypeId) {
+			fetch("/admin/room/update", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					roomId: roomId,
+					roomTypeId: roomTypeId
+				})
+			})
+				.then(response => response.json())
+				.then(data => {
+					console.log(data);
+					location.reload();
+				})
+				.catch(error => {
+					console.error("Error:", error);
+				});
+		}
+
+		// 객실 수정
+		/*function updateRoom() {
+			const formData = new FormData(document.getElementById("updateRoomForm"));
+
+			fetch("/admin/room/update", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					roomId: formData.get("udtRoomId"),
+					roomTypeId: formData.get("udtRoomTypeId")
+				})
+			})
+				.then(response => response.json())
+				.then(data => {
+					// 서버로부터 응답 받은 데이터를 처리
+					console.log(data);
+					//location.reload();
+				})
+				.catch(error => {
+					console.error("Error:", error);
+				});
+
+		}*/
+
+		// 객실 추가
 		function addRoom() {
 			const formData = new FormData(document.getElementById("addRoomForm"));
 
@@ -96,7 +203,7 @@
 				.then(data => {
 					// 서버로부터 응답 받은 데이터를 처리
 					console.log(data);
-					location.reload();
+					//location.reload();
 				})
 				.catch(error => {
 					console.error("Error:", error);

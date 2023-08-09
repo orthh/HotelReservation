@@ -15,6 +15,7 @@ import com.smhrd.hotelreservation.web.dto.RoomTypesResDto;
 import com.smhrd.hotelreservation.web.dto.RoomTypesSaveReqDto;
 import com.smhrd.hotelreservation.web.dto.RoomsResDto;
 import com.smhrd.hotelreservation.web.dto.RoomsSaveReqDto;
+import com.smhrd.hotelreservation.web.dto.RoomsUpdateReqDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +37,22 @@ public class RoomsService {
 				.roomTypes(roomTypes).build()).getId();
 	}
 	
+	// 객실 수정하기
+	public Long updateRoom(RoomsUpdateReqDto requestDto) {
+		
+		Rooms room = roomsJpaRepository.findById(requestDto.getRoomId()).orElseThrow(() -> new IllegalArgumentException("해당 객실이 없습니다."));
+		
+		RoomTypes roomTypes = roomTypesJpaRepository.findById(requestDto.getRoomTypeId()).orElseThrow(() -> new IllegalArgumentException("해당 객실 타입이 없습니다."));
+		
+		room.setRoomTypes(roomTypes);
+		
+		return roomsJpaRepository.save(room).getId();
+	}
+	
 	// 특정 객실 정보 보내기
 	@Transactional(readOnly = true)
 	public Rooms findById(Long id) {
-		Rooms rooms = roomsJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
-		return rooms;
+		return roomsJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
 	}
 	
 	// 모든 객실 정보 보내기
