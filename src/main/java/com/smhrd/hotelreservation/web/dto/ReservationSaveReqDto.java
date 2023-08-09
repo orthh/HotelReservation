@@ -10,12 +10,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ReservationSaveReqDto {
+
 	private LocalDate checkOutDate;
 	private LocalDate checkInDate;
 	private Long roomtype_id;
 	
 	@Builder
-	public ReservationSaveReqDto(String checkOutDate, String checkInDate, Long roomtype_id) {
+	public ReservationSaveReqDto(String checkOutDate, String checkInDate, Long roomtype_id, Long id) {
 		this.checkOutDate = convertToLocalDate(checkOutDate);
 		this.checkInDate = convertToLocalDate(checkInDate);
 		this.roomtype_id = roomtype_id;

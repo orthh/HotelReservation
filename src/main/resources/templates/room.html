@@ -155,7 +155,6 @@
 			})
 				.then(response => response.json())
 				.then(data => {
-					console.log(data);
 					location.reload();
 				})
 				.catch(error => {
@@ -206,8 +205,7 @@
 				.then(response => response.json())
 				.then(data => {
 					// 서버로부터 응답 받은 데이터를 처리
-					console.log(data);
-					//location.reload();
+					location.reload();
 				})
 				.catch(error => {
 					console.error("Error:", error);
@@ -230,7 +228,7 @@
 			})
 				.then(response => response.json())
 				.then(result => {
-					location.reload();
+					result == -1 ? alert("객실을 이용중인 예약이있습니다.") : location.reload()
 				})
 				.catch(error => {
 					console.log(error);

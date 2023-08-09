@@ -10,8 +10,8 @@ import com.smhrd.hotelreservation.model.entity.ReservationDetails;
 
 @Repository
 public interface ReservationDetailsJpaRepository extends JpaRepository<ReservationDetails, Long> {
+	
 	List<ReservationDetails> findAllByDateBetween(LocalDate start, LocalDate end);
 
-	
 	List<ReservationDetails> findAllByReservationsId(long l);
 }

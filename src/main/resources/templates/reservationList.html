@@ -86,7 +86,9 @@
 					<td th:text="${reservation.createdAt}" style="color: blue; cursor: pointer"></td>
 					<td th:text="${reservation.username}"></td>
 					<td th:text="${reservation.totalPrice}"></td>
-					<td><button>취소</button></td>
+					<td>
+						<button class="btn btn-small btn-delete" th:onclick="deleteReservation([[${reservation.reservation_id}]])">취소</button>
+					</td>
 					<!--<td><a th:href="@{/admin/reservationList/detail(reservation_id = ${reservation.reservation_id})}">보기</a>-->
 					</td>
 				</tr>
@@ -95,14 +97,13 @@
 			</tbody>
 		</table>
 
-		<h2>예약 상세 내역</h2>
+		<h2>예약 상세 내역</h2>	
 		<table id="reservationDetailsTable">
 			<thead>
 				<tr>
 					<th>예약 날짜</th>
 					<th>객실 번호</th>
 					<th>객실 타입</th>
-					<th>작업</th>
 				</tr>
 			</thead>
 			<tbody id="reservationDetailsBody">
@@ -138,6 +139,27 @@
 				});
 			});
 		});*/
+		function deleteReservation(reservation_id) {
+			let data = {
+				id: reservation_id,
+			};
+
+			fetch('/admin/reservation/remove', {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json; charset=utf-8'
+				},
+				body: JSON.stringify(data)
+			})
+				.then(response => response.json())
+				.then(result => {
+					result == -1 ? alert("객실을 이용중인 예약이있습니다.") : location.reload()
+				})
+				.catch(error => {
+					console.log(error);
+				});
+
+		}
 
 		function showReservationDetails(reservation_id) {
 
@@ -156,9 +178,6 @@
 							'<td>' + item.date + '</td>' +
 							'<td>' + item.roomNumber + '</td>' +
 							'<td>' + item.roomName + '</td>' +
-							'<td>' +
-							'<button class="btn btn-small btn-delete" onclick="deleteReservationDetail(\'' + item.reservation_detail_id + '\')">취소</button>' +
-							'</td>' +
 							'</tr>';
 					});
 					reservationDetailsBody.innerHTML = tableBody;
@@ -176,7 +195,6 @@
 			let data = {
 				id: reservation_detail_id,
 			};
-
 			$.ajax({
 				type: 'DELETE',
 				url: '/admin/reservationdetails/remove',

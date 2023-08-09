@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smhrd.hotelreservation.service.ReservationsService;
+import com.smhrd.hotelreservation.web.dto.ReservationDeleteReqDto;
+import com.smhrd.hotelreservation.web.dto.ReservationDetailSaveReqDto;
 import com.smhrd.hotelreservation.web.dto.ReservationSaveReqDto;
 
 import lombok.RequiredArgsConstructor;
@@ -27,20 +29,23 @@ public class ReservationsController {
 	// post	예약등록
 	@PostMapping("/home/reservation/add")
 	public Long reservation(@RequestBody ReservationSaveReqDto requestDto) {
-		// @RequestBody로 받으면 Dto타입으로 받을 수 있음.
 		System.out.println(requestDto);
-		log.info("view to controller with reservation");
-//		return 200L;
+		log.info("view to controller with addReservation");
 		return reservationsService.reservation(requestDto);
 	}
 	
-	// delete 관리자 상세예약 취소
+	// delete 관리자 예약 취소 ( 삭제 )
+		@DeleteMapping("/admin/reservation/remove")
+		public Long deleteReservation(@RequestBody ReservationDeleteReqDto requestDto) {
+			log.info("view to controller with deleteReservation");
+			return reservationsService.deleteReservation(requestDto);
+		}
+	
+	// delete 관리자 상세예약 취소 ( 삭제 )
 	@DeleteMapping("/admin/reservationdetails/remove")
-	public Long adminDelete() {
-		
-		
-		
-		return 1L;
+	public Long deleteReservationDetails(@RequestBody ReservationDetailSaveReqDto requestDto) {
+		log.info("view to controller with deleteReservationDetails");
+		return reservationsService.deleteReservationDetails(requestDto);
 	}
 	
 	

@@ -31,15 +31,21 @@ public class RoomsController {
 	
 	@PutMapping("/admin/room/update")
 	public Long updateRoom(@RequestBody RoomsUpdateReqDto requestDto) {
-		System.out.println(requestDto.getRoomId());
-		System.out.println(requestDto.getRoomTypeId());
 		return roomService.updateRoom(requestDto);
 	}
 	
 	@DeleteMapping("/admin/room/remove")
-	public Long removeRoomtype(@RequestBody RoomsDeleteReqDto requestDto) {
+	public Long removeRoom(@RequestBody RoomsDeleteReqDto requestDto) {
 		log.info("view to controller with removeRoomtype");
-		return roomService.removeRoom(requestDto);
+		Long result;
+			
+		try {
+			result = roomService.removeRoom(requestDto);
+		} catch (Exception e) {
+			// 객실 삭제중 이미 그 객실을 예약한 사람이 있을경우 -1L 반환
+			result= -1L;
+		}
+		return result;
 	}
 	
 }

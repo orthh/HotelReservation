@@ -16,8 +16,10 @@ import com.smhrd.hotelreservation.model.entity.Users;
 import com.smhrd.hotelreservation.model.repository.ReservationDetailsJpaRepository;
 import com.smhrd.hotelreservation.model.repository.ReservationsJpaRepository;
 import com.smhrd.hotelreservation.model.repository.RoomsJpaRepository;
+import com.smhrd.hotelreservation.web.dto.ReservationDeleteReqDto;
 import com.smhrd.hotelreservation.web.dto.ReservationDetailListResDto;
 import com.smhrd.hotelreservation.web.dto.ReservationDetailResDto;
+import com.smhrd.hotelreservation.web.dto.ReservationDetailSaveReqDto;
 import com.smhrd.hotelreservation.web.dto.ReservationListResDto;
 import com.smhrd.hotelreservation.web.dto.ReservationSaveReqDto;
 
@@ -108,5 +110,28 @@ public class ReservationsService {
 				.getReservationDetails().stream().map(ReservationDetailListResDto::new)
 				.collect(Collectors.toList());
 	}
+	
+	/**
+	 * method	단일 예약 정보 삭제 
+	 */
+	@Transactional
+	public Long deleteReservation(ReservationDeleteReqDto requestDto) {
+		Reservations reservation = reservationsJpaRepository.findById(requestDto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 예약 정보가 없습니다"));
+		reservationsJpaRepository.delete(reservation);
+		return reservation.getId();
+	}
+	
+	/**
+	 * method	단일 예약상세 정보 삭제 
+	 */
+	@Transactional
+	public Long deleteReservationDetails(ReservationDetailSaveReqDto requestDto) {
+		ReservationDetails detail = ReservationDetails.builder().id(requestDto.getId()).build();
+		reservationDetailsJpaRepository.delete(detail);
+		return detail.getId();
+	}
+	
+	
+	
 	
 }

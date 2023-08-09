@@ -105,6 +105,20 @@
 			cursor: pointer;
 			border-radius: 5px;
 		}
+		
+		.blueButton2 {
+			background-color: #007BFF;
+			border: none;
+			color: white;
+			padding: 3px 6px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin-bottom: 20px;
+			cursor: pointer;
+			border-radius: 5px;
+		}
 
 		.redButton {
 			background-color: crimson;
@@ -194,12 +208,12 @@
 		<div id="message"></div>
 
 		<label for="roomType">객실 타입</label>
-		<input type="text" id="roomType" name="roomType" required>
+		<input type="text" id="roomType2" name="roomType2" required>
 
 		<label for="price">가격</label>
-		<input type="number" id="price" name="price" required>
+		<input type="number" id="price2" name="price2" required>
 
-		<button onclick="addRoomType()">추가</button>
+		<button class="blueButton2" onclick="addRoomType()">추가</button>
 
 		<!-- Bootstrap JavaScript -->
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -209,8 +223,8 @@
 
 	<script>
 		function addRoomType() {
-			const roomType = document.getElementById("roomType").value;
-			const price = document.getElementById("price").value;
+			const roomType = document.getElementById("roomType2").value;
+			const price = document.getElementById("price2").value;
 
 			const data = {
 				roomName: roomType,
