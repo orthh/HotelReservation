@@ -13,6 +13,7 @@ import com.smhrd.hotelreservation.model.repository.RoomTypesJpaRepository;
 import com.smhrd.hotelreservation.model.repository.RoomsJpaRepository;
 import com.smhrd.hotelreservation.web.dto.RoomTypesResDto;
 import com.smhrd.hotelreservation.web.dto.RoomTypesSaveReqDto;
+import com.smhrd.hotelreservation.web.dto.RoomsDeleteReqDto;
 import com.smhrd.hotelreservation.web.dto.RoomsResDto;
 import com.smhrd.hotelreservation.web.dto.RoomsSaveReqDto;
 import com.smhrd.hotelreservation.web.dto.RoomsUpdateReqDto;
@@ -52,7 +53,7 @@ public class RoomsService {
 	// 특정 객실 정보 보내기
 	@Transactional(readOnly = true)
 	public Rooms findById(Long id) {
-		return roomsJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+		return roomsJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 객실이 존재하지 않습니다."));
 	}
 	
 	// 모든 객실 정보 보내기
@@ -60,5 +61,20 @@ public class RoomsService {
 	public List<RoomsResDto> findAllRooms(){
 		return roomsJpaRepository.findAll().stream().map((obj) -> new RoomsResDto(obj)).collect(Collectors.toList());
 	}
+	
+	/**
+	 * method	객실 삭제
+	 */
+	@Transactional
+	public Long removeRoom(RoomsDeleteReqDto requestDto) {
+		
+		Rooms room = roomsJpaRepository.findById(requestDto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 객실이 존재하지 않습니다."));
+		
+		roomsJpaRepository.delete(room);
+		
+		return room.getId();
+	}
+	
+	
 	
 }
