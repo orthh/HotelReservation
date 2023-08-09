@@ -29,7 +29,9 @@ public class RoomsService {
 	private final RoomTypesJpaRepository roomTypesJpaRepository;
 	private final RoomsJpaRepository roomsJpaRepository;
 	
-	// 객실 추가하기
+	/**
+	 * method	객실 등록
+	 */
 	@Transactional
 	public Long addRoom(RoomsSaveReqDto requestDto) {
 		RoomTypes roomTypes = roomTypesJpaRepository.findById(requestDto.getRoomType()).orElseThrow(() -> new IllegalArgumentException("해당 객실타입이 없습니다."));;
@@ -38,7 +40,9 @@ public class RoomsService {
 				.roomTypes(roomTypes).build()).getId();
 	}
 	
-	// 객실 수정하기
+	/**
+	 * method	객실 수정
+	 */
 	public Long updateRoom(RoomsUpdateReqDto requestDto) {
 		
 		Rooms room = roomsJpaRepository.findById(requestDto.getRoomId()).orElseThrow(() -> new IllegalArgumentException("해당 객실이 없습니다."));
@@ -50,13 +54,17 @@ public class RoomsService {
 		return roomsJpaRepository.save(room).getId();
 	}
 	
-	// 특정 객실 정보 보내기
+	/**
+	 * method	특정 객실정보 조회
+	 */
 	@Transactional(readOnly = true)
 	public Rooms findById(Long id) {
 		return roomsJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 객실이 존재하지 않습니다."));
 	}
 	
-	// 모든 객실 정보 보내기
+	/**
+	 * method	모든 객실정보 조회
+	 */
 	@Transactional(readOnly = true)
 	public List<RoomsResDto> findAllRooms(){
 		return roomsJpaRepository.findAll().stream().map((obj) -> new RoomsResDto(obj)).collect(Collectors.toList());
