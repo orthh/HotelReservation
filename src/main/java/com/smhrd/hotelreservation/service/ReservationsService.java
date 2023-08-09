@@ -68,14 +68,14 @@ public class ReservationsService {
 			    .filter(room -> room.getRoomTypes().getId().equals(requestDto.getRoomtype_id()))
 			    .collect(Collectors.toList());
 		
-		// 빈방이 없는경우 -1L반환
+		// 빈방이 없는경우 -1L 반환
 		if(emptyRooms.size() <= 0) return -1L; 
 		
-		// 랜덤한 룸
+		// 랜덤한 빈방 배정
 		Rooms emtRoom = emptyRooms.get(new Random().nextInt(emptyRooms.size()));
 		List<ReservationDetails> reservationList = new ArrayList<ReservationDetails>();
 		
-		// 일자별로 계산
+		// 일자별로 저장
 		int days = (int) ChronoUnit.DAYS.between(requestDto.getCheckInDate(), requestDto.getCheckOutDate()) + 1;
 		for(int i=0; i<days; i++) {
 			reservationList.add(ReservationDetails.builder().rooms(emtRoom).date(requestDto.getCheckInDate().plusDays(i)).build());
