@@ -21,6 +21,11 @@
 *  객실 추가
 <br>
 
+## 🖥 시연 영상
+
+https://github.com/orthh/HotelReservation/assets/107793363/251475df-a285-4c53-803c-f75f203b958f
+
+
 ## 일부 코드
 - 호텔 예약
 ![호텔예약](https://github.com/orthh/HotelReservation/assets/107793363/3518ef1a-c57f-450b-acbf-6be28fd9a256)
@@ -28,13 +33,16 @@
 - JPA 엔터티
 ![reservationsEntity](https://github.com/orthh/HotelReservation/assets/107793363/87270d86-ef2c-471a-badc-fb699ff4827a)
 
-## ⛏ 기술스택
-![thymeleaf_logo_white](https://github.com/orthh/HotelReservation/assets/107793363/7fb6e3ef-8d9d-452d-98a8-684ec3354195)
-![bootstrap](https://github.com/orthh/HotelReservation/assets/107793363/4d58900a-1fc5-4056-95d7-13d6580f48d1)
-![스프링부트](https://github.com/orthh/HotelReservation/assets/107793363/d269c1bd-3dde-4b6f-b2a4-194e81a51e75)
-![JPA](https://github.com/orthh/HotelReservation/assets/107793363/69f0ea52-a86c-40b5-82b1-f7ae8b551827)
-![mariadb](https://github.com/orthh/HotelReservation/assets/107793363/43e165a8-e525-44d8-a462-394d29cc868a)
-<br>
+<h2>⛏ 기술스택</h2>
+<p align="center">
+    <img src="https://github.com/orthh/HotelReservation/assets/107793363/7fb6e3ef-8d9d-452d-98a8-684ec3354195" alt="thymeleaf_logo_white">
+    <img src="https://github.com/orthh/HotelReservation/assets/107793363/4d58900a-1fc5-4056-95d7-13d6580f48d1" alt="bootstrap">
+    <img src="https://github.com/orthh/HotelReservation/assets/107793363/d269c1bd-3dde-4b6f-b2a4-194e81a51e75" alt="스프링부트">
+    <img src="https://github.com/orthh/HotelReservation/assets/107793363/d269c1bd69f0ea52-a86c40b582b1-f7ae8b551827" alt="JPA">
+    <img src="https://github.com/orhtthotelreservationassets10779336343e165a8-e52544da46239429cc868a" alt= "mariadb"> 
+</p>
+
+
 
 ## ⚙ 서비스 흐름도
 ![서비스흐름도](https://github.com/orthh/HotelReservation/assets/107793363/6a7234ce-8eb1-4651-a3c4-fb04a3af88c8)
@@ -54,9 +62,6 @@
 ![rooms](https://github.com/orthh/HotelReservation/assets/107793363/6f23df3c-b261-4f08-829f-bd7d467fb133)
 ![roomTypes](https://github.com/orthh/HotelReservation/assets/107793363/111f2288-2588-41a9-9d3e-b0b88edfb58a)
 
-## 🖥 시연 영상
-
-https://github.com/orthh/HotelReservation/assets/107793363/251475df-a285-4c53-803c-f75f203b958f
 
 
 <br>
