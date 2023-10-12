@@ -33,14 +33,13 @@ https://github.com/orthh/HotelReservation/assets/107793363/251475df-a285-4c53-80
 - JPA 엔터티
 ![reservationsEntity](https://github.com/orthh/HotelReservation/assets/107793363/87270d86-ef2c-471a-badc-fb699ff4827a)
 
-<h2>⛏ 기술스택</h2>
-<p align="center">
-    <img src="https://github.com/orthh/HotelReservation/assets/107793363/7fb6e3ef-8d9d-452d-98a8-684ec3354195" alt="thymeleaf_logo_white">
-    <img src="https://github.com/orthh/HotelReservation/assets/107793363/4d58900a-1fc5-4056-95d7-13d6580f48d1" alt="bootstrap">
-    <img src="https://github.com/orthh/HotelReservation/assets/107793363/d269c1bd-3dde-4b6f-b2a4-194e81a51e75" alt="스프링부트">
-    <img src="https://github.com/orthh/HotelReservation/assets/107793363/d269c1bd69f0ea52-a86c40b582b1-f7ae8b551827" alt="JPA">
-    <img src="https://github.com/orhtthotelreservationassets10779336343e165a8-e52544da46239429cc868a" alt= "mariadb"> 
-</p>
+## ⛏ 기술스택
+- springboot
+- bootstrap
+- thymeleaf
+- JPA
+- mariadb
+<br>
 
 
 
