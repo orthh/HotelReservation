@@ -27,10 +27,11 @@ https://github.com/orthh/HotelReservation/assets/107793363/251475df-a285-4c53-80
 
 
 ## 일부 코드
-- 호텔 예약
+- 호텔 예약 (랜덤 방배정)
 ![호텔예약](https://github.com/orthh/HotelReservation/assets/107793363/3518ef1a-c57f-450b-acbf-6be28fd9a256)
 
 - JPA 엔터티
+  
 ![reservationsEntity](https://github.com/orthh/HotelReservation/assets/107793363/87270d86-ef2c-471a-badc-fb699ff4827a)
 
 ## ⛏ 기술스택
